@@ -10,8 +10,8 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.get('/:id', md.checkAccountId, (req, res) => {
+  res.status(200).json(req.account)
 })
 
 router.post('/', (req, res, next) => {
