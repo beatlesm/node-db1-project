@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 router.get('/', (req, res, next) => {
-  // DO YOUR MAGIC
+  res.json('get /api/accounts wired')
 })
 
 router.get('/:id', (req, res, next) => {
