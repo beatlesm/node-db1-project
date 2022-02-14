@@ -1,7 +1,13 @@
 const router = require('express').Router()
+const md = require('./accounts-middleware')
+const Account = require('./accounts-model')
 
 router.get('/', (req, res, next) => {
-  res.json('get /api/accounts wired')
+  Account.getAll()
+    .then ( accounts => {
+      res.status(200).json( accounts )
+    })
+    .catch(next)
 })
 
 router.get('/:id', (req, res, next) => {
@@ -21,7 +27,10 @@ router.delete('/:id', (req, res, next) => {
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
-  // DO YOUR MAGIC
+  res.status(err.status || 500).json({
+    message: err.message,
+    stack: err.stack,
+  })
 })
 
 module.exports = router;
