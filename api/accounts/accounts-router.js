@@ -14,8 +14,17 @@ router.get('/:id', md.checkAccountId, (req, res) => {
   res.status(200).json(req.account)
 })
 
-router.post('/', (req, res, next) => {
-  // DO YOUR MAGIC
+router.post('/', md.checkAccountPayload, md.checkAccountNameUnique, (req, res, next) => {
+  const { name, budget } = req.body
+  Account.create(req.body)
+    .then ( resp => {      
+      res.status(201).json({
+        id: resp[0],
+        name: name,
+        budget: budget
+      })
+    })
+    .catch(next)
 })
 
 router.put('/:id', (req, res, next) => {

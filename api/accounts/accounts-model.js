@@ -6,12 +6,11 @@ const getAll = () => {
 }
 
 const getById = id => {
-  const rows = db('accounts').where({id: id}).first()
-  return rows
+  return db('accounts').where({id: id}).first()  
 }
 
 const create = account => {
-  // DO YOUR MAGIC
+  return db('accounts').insert(account)  
 }
 
 const updateById = (id, account) => {
