@@ -31,7 +31,7 @@ router.put('/:id', md.checkAccountId, md.checkAccountPayload, (req, res, next) =
   const { name, budget } = req.body
   Account.updateById(req.params.id, req.body)
     .then ( resp => {      
-      if ( resp )  {
+      if ( resp > 0 )  {
         res.status(200).json({
           id: req.params.id,
           name: name,
@@ -49,8 +49,25 @@ router.put('/:id', md.checkAccountId, md.checkAccountPayload, (req, res, next) =
 
 });
 
-router.delete('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.delete('/:id', md.checkAccountId, (req, res, next) => {
+  const { name, budget } = req.body
+  Account.deleteById(req.params.id)
+  .then ( resp => { 
+    console.log('resp: ', resp)     
+    if (resp > 0) {
+      res.status(200).json({
+        id: req.params.id,
+        name: name,
+        budget: budget
+      })
+    } else {
+      next ({
+        status: 400,
+        message: 'delete fails'
+      })
+    }
+  })
+  .catch(next)
 })
 
 router.use((err, req, res, next) => { // eslint-disable-line
