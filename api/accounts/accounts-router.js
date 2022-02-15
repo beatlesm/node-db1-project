@@ -27,8 +27,26 @@ router.post('/', md.checkAccountPayload, md.checkAccountNameUnique, (req, res, n
     .catch(next)
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.put('/:id', md.checkAccountId, md.checkAccountPayload, (req, res, next) => {
+  const { name, budget } = req.body
+  Account.updateById(req.params.id, req.body)
+    .then ( resp => {      
+      if ( resp )  {
+        res.status(200).json({
+          id: req.params.id,
+          name: name,
+          budget: budget
+        })
+      } else {
+        next ({
+          status: 400,
+          message: 'update fails'
+        })
+      }
+      
+    })
+    .catch(next)
+
 });
 
 router.delete('/:id', (req, res, next) => {
